@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 420px;
+            margin: 48px auto 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        h2 {
+            color: #2d6cdf;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .info {
+            margin: 24px 0 18px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .info li {
+            background: #f7fafc;
+            border: 1px solid #cfd8dc;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            font-size: 1.08em;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #2d6cdf;
+            min-width: 80px;
+            display: inline-block;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 18px;
+        }
+        .actions a {
+            display: inline-block;
+            background: #2d6cdf;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 24px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .actions a:hover {
+            background: #174a8c;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 18px 4vw 0 4vw;
+                padding: 16px 4vw 12px 4vw;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            .info li {
+                font-size: 0.98em;
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Employee Created</h2>
+    <ul class="info">
+        <li><span class="info-label">ID:</span> <span th:text="${employee.id}"></span></li>
+        <li><span class="info-label">Name:</span> <span th:text="${employee.name}"></span></li>
+        <li><span class="info-label">Role:</span> <span th:text="${employee.role}"></span></li>
+        <li th:if="${employee.phoneNumber != null}"><span class="info-label">Phone:</span> <span th:text="${employee.phoneNumber}"></span></li>
+        <li th:if="${employee.description != null}"><span class="info-label">Description:</span> <span th:text="${employee.description}"></span></li>
+    </ul>
+    <div class="actions">
+        <a th:href="@{/ui/create}">Create Another Employee</a>
+        <a th:href="@{/}">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>

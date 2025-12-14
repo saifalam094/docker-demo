@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Employees</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 48px auto 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 32px 18px 24px 18px;
+        }
+
+        h2 {
+            color: #2d6cdf;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* -------- TABLE (DESKTOP) -------- */
+        .desktop-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e0e7ef;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f8fb;
+            color: #2d6cdf;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f0f6ff;
+        }
+
+        /* -------- ACTION BUTTONS -------- */
+        .action-btn {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+
+        .action-btn.edit {
+            background: #ffd600;
+            color: #333;
+        }
+
+        .action-btn.delete {
+            background: #e53935;
+            color: #fff;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #2d6cdf;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 14px;
+        }
+
+        /* -------- MOBILE CARDS -------- */
+        .mobile-cards {
+            display: none;
+        }
+
+        .card {
+            background: #f9fbff;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .card p {
+            margin: 6px 0;
+            font-size: 0.95em;
+        }
+
+        .card-actions {
+            margin-top: 10px;
+        }
+
+        .card-actions form {
+            display: inline;
+        }
+
+        /* -------- RESPONSIVE SWITCH -------- */
+        @media (max-width: 768px) {
+            .desktop-table {
+                display: none;
+            }
+
+            .mobile-cards {
+                display: block;
+            }
+
+            .container {
+                margin: 20px 10px;
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h2>All Employees</h2>
+
+    <!-- DESKTOP TABLE -->
+    <table class="desktop-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Phone</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.id}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.role}"></td>
+            <td th:text="${employee.phoneNumber}"></td>
+            <td th:text="${employee.description}"></td>
+            <td th:text="${employee.createdDate != null ? #temporals.format(employee.createdDate, 'yyyy-MM-dd HH:mm') : '-'}"></td>
+
+            <td th:text="${employee.modifiedDate != null ? #temporals.format(employee.modifiedDate, 'yyyy-MM-dd HH:mm') : '-'}"></td>
+
+            <td>
+                <a th:href="@{'/ui/edit/' + ${employee.id}}" class="action-btn edit">Edit</a>
+                <form th:action="@{'/ui/delete/' + ${employee.id}}" method="post" style="display:inline;">
+                    <button type="submit" class="action-btn delete"
+                            onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- MOBILE CARD VIEW -->
+    <div class="mobile-cards">
+        <div class="card" th:each="employee : ${employees}">
+            <p><b>ID:</b> <span th:text="${employee.id}"></span></p>
+            <p><b>Name:</b> <span th:text="${employee.name}"></span></p>
+            <p><b>Role:</b> <span th:text="${employee.role}"></span></p>
+            <p><b>Phone:</b> <span th:text="${employee.phoneNumber}"></span></p>
+            <p><b>Description:</b> <span th:text="${employee.description}"></span></p>
+            <p><b>Created:</b> <span th:text="${employee.createdDate != null ? #temporals.format(employee.createdDate, 'yyyy-MM-dd HH:mm') : '-'}"></span></p>
+            <p><b>Modified:</b> <span th:text="${employee.modifiedDate != null ? #temporals.format(employee.modifiedDate, 'yyyy-MM-dd HH:mm') : '-'}"></span></p>
+
+            <div class="card-actions">
+                <a th:href="@{'/ui/edit/' + ${employee.id}}" class="action-btn edit">Edit</a>
+                <form th:action="@{'/ui/delete/' + ${employee.id}}" method="post">
+                    <button type="submit" class="action-btn delete"
+                            onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <a class="back-link" th:href="@{/}">&larr; Back to Home</a>
+</div>
+</body>
+</html>
