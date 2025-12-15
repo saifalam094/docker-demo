@@ -1,15 +1,13 @@
-# Use JDK 17
-FROM eclipse-temurin:17-jdk
-LABEL maintainer="saifalam.in094@gmail.com"
-
-# Set working directory
+# Stage 1: Build with Maven
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the already-built JAR
-COPY target/docker-demo-0.0.1-SNAPSHOT.jar docker-demo.jar
-
-# Expose port
+# Stage 2: Run with JDK
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/docker-demo-0.0.1-SNAPSHOT.jar docker-demo.jar
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "docker-demo.jar"]
