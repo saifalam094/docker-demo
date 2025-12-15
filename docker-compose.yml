@@ -1,40 +1,40 @@
-services:
-  mysql-container:
-    image: mysql:8
-    container_name: mysql-container
-    environment:
-      MYSQL_DATABASE: testdb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypass
-      MYSQL_ROOT_PASSWORD: rootpass
-    ports:
-      - "3307:3306"   # ✅ FIXED
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-    networks:
-      - springboot-mysql-net
-
-  springboot-app:
-    build: .
-    container_name: springboot-mysql
-    depends_on:
-      mysql-container:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/testdb
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypass
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "true"
-    networks:
-      - springboot-mysql-net
-
-networks:
-  springboot-mysql-net:
-    driver: bridge
+#services:
+#  mysql-container:
+#    image: mysql:8
+#    container_name: mysql-container
+#    environment:
+#      MYSQL_DATABASE: testdb
+#      MYSQL_USER: myuser
+#      MYSQL_PASSWORD: mypass
+#      MYSQL_ROOT_PASSWORD: rootpass
+#    ports:
+#      - "3307:3306"   # ✅ FIXED
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    restart: unless-stopped
+#    networks:
+#      - springboot-mysql-net
+#
+#  springboot-app:
+#    build: .
+#    container_name: springboot-mysql
+#    depends_on:
+#      mysql-container:
+#        condition: service_healthy
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/testdb
+#      SPRING_DATASOURCE_USERNAME: myuser
+#      SPRING_DATASOURCE_PASSWORD: mypass
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_JPA_SHOW_SQL: "true"
+#    networks:
+#      - springboot-mysql-net
+#
+#networks:
+#  springboot-mysql-net:
+#    driver: bridge
